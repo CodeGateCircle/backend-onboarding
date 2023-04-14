@@ -1,0 +1,203 @@
+openapi: "3.0.0"
+info:
+  title: "Day Service Api"
+  description: "Day Service Api Document"
+  termsOfService: "http://swagger.io/terms/"
+  version: "1.0.0"
+
+tags:
+  - name: "post"
+    description: "投稿"
+  - name: "comment"
+    description: "コメント"
+
+servers:
+  - url: 'http://{host}:3000'
+    description: go service api server endpoint application
+    variables:
+      host:
+        default: localhost
+        enum:
+          - localhost
+
+paths:
+  /posts:
+    post:
+      security: []
+      operationId: postPosts
+      tags:
+        - "post"
+      summary: "投稿を作成する"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Post"
+      responses:
+        200:
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+    get:
+      security: []
+      operationId: getPosts
+      tags:
+        - "post"
+      summary: "投稿一覧を取得する"
+      responses:
+        200:
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+  /posts/{:post_id}:
+    get:
+      security: []
+      operationId: getPost
+      tags:
+        - "post"
+      summary: "投稿を取得する"
+      responses:
+        200:
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+    put:
+      security: []
+      operationId: updatePost
+      tags:
+        - "post"
+      summary: "投稿を更新する"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Post"
+      responses:
+        200:
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+    delete:
+      security: []
+      operationId: deletePost
+      tags:
+        - "post"
+      summary: "投稿を削除する"
+      responses:
+        200:
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                    example: 'success'
+  /posts/{:post_id}/comments:
+    get:
+      security: []
+      operationId: getComments
+      tags:
+        - "comment"
+      summary: "コメント一覧を取得する"
+      responses:
+        200:
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+  /posts/{:post_id}/comments/{:comment_id}:
+    put:
+      security: []
+      operationId: updateComment
+      tags:
+        - "comment"
+      summary: "投稿を更新する"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Comment"
+      responses:
+        200:
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+    delete:
+      security: []
+      operationId: deleteComment
+      tags:
+        - "comment"
+      summary: "投稿を削除する"
+      responses:
+        200:
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                    example: 'success'
+
+components:
+  schemas:
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+          readOnly: true
+        content:
+          type: string
+          example: '投稿内容'
+        created_at:
+          readOnly: true
+          type: string
+          format: date
+        updated_at:
+          readOnly: true
+          type: string
+          format: date
+    Comment:
+      type: object
+      properties:
+        id:
+          readOnly: true
+          type: integer
+          example: 1
+        post_id:
+          readOnly: true
+          type: integer
+          example: 1
+        content:
+          type: string
+          example: '投稿内容'
+        created_at:
+          readOnly: true
+          type: string
+          format: date
+        updated_at:
+          readOnly: true
+          type: string
+          format: date
+
+
